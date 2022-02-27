@@ -1,0 +1,22 @@
+type PokedexData {
+    id: ID
+    nameEn: String
+    height: Float
+    weight: Float
+    types: [Type]
+    abilities: [Ability]
+}
+
+type Type {
+    id: ID
+    name: String
+}
+
+type Ability {
+    id: ID
+    name: String
+}
+
+type Query {
+    getPokedexData(id: ID): PokedexData
+}

@@ -5,10 +5,36 @@ services:
     volumes:
      - ./nginx/templates:/etc/nginx/templates
     ports:
-     - "8080:80"
+     - "8000:80"
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
      - "3000:3000"
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        - JAR_FILE=./build/libs/backend-1.0.0.jar
+    ports:
+      - "8080:8080"
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - type: bind
+        source: "./db/conf.d"
+        target: "/etc/mysql/conf.d"
+      - type: bind
+        source: "./db/docker-entrypoint-initdb.d"
+        target: "/docker-entrypoint-initdb.d"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
