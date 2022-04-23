@@ -18,5 +18,6 @@ type Ability {
 }
 
 type Query {
+    getAllPokedexData: [PokedexData]!
     getPokedexData(id: ID): PokedexData
 }

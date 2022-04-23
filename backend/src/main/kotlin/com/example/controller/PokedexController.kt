@@ -11,6 +11,11 @@ class PokedexController(
     private val pokedexService: PokedexService
 ) {
     @QueryMapping
+    fun getAllPokedexData(): List<PokedexData> {
+        return pokedexService.getAllPokedexData()
+    }
+
+    @QueryMapping
     fun getPokedexData(@Argument id: Long): PokedexData? {
         return pokedexService.getPokedexData(id)
     }

@@ -14,6 +14,17 @@ import java.lang.Exception
 class PokemonRepositoryImpl(
     private val jdbcTemplate: NamedParameterJdbcTemplate
 ) : PokemonRepository {
+    override fun getAllPokemon(): List<Pokemon> {
+        return try {
+            jdbcTemplate.query(GET_ALL_POKEMON_SQL) { rs, _ ->
+                Pokemon(rs.getLong("id"), rs.getString("name_en"), rs.getFloat("height"), rs.getFloat("weight"))
+            }
+        } catch (e: EmptyResultDataAccessException) {
+            return listOf()
+        } catch (e: DataAccessException) {
+            throw Exception(e)
+        }
+    }
 
     override fun getPokemonById(id: Long): Pokemon? {
         return try {
@@ -58,6 +69,7 @@ class PokemonRepositoryImpl(
     }
 
     companion object {
-        private const val GET_POKEMON_BY_ID_SQL: String = "SELECT * FROM pokemon WHERE id = :id"
+        private const val GET_ALL_POKEMON_SQL = "SELECT * FROM pokemon"
+        private const val GET_POKEMON_BY_ID_SQL = "SELECT * FROM pokemon WHERE id = :id"
     }
 }
