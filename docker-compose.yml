@@ -24,6 +24,8 @@ services:
         - JAR_FILE=./build/libs/backend-1.0.0.jar
     ports:
       - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=compose
     depends_on:
       - db
   db:
