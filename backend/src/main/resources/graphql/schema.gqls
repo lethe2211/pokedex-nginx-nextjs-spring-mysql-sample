@@ -9,12 +9,12 @@ type PokedexData {
 
 type Type {
     id: ID
-    name: String
+    nameEn: String
 }
 
 type Ability {
     id: ID
-    name: String
+    nameEn: String
 }
 
 type Query {

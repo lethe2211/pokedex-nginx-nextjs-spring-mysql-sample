@@ -1,3 +1,4 @@
+-- DDL
 CREATE TABLE IF NOT EXISTS pokemon (
   id INT NOT NULL PRIMARY KEY,
   name_en CHAR(50) DEFAULT NULL,
@@ -7,17 +8,19 @@ CREATE TABLE IF NOT EXISTS pokemon (
 
 CREATE TABLE IF NOT EXISTS type (
   id INT NOT NULL PRIMARY KEY,
-  name CHAR(50) DEFAULT NULL
+  name_en CHAR(50) DEFAULT NULL,
+  sort_order INT NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS ability (
   id INT NOT NULL PRIMARY KEY,
-  name CHAR(50) DEFAULT NULL
+  name_en CHAR(50) DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS pokemon_type (
   pokemon_id INT NOT NULL,
   type_id INT NOT NULL,
+  sort_order INT NOT NULL,
   PRIMARY KEY (pokemon_id, type_id),
   CONSTRAINT fk_pokemon_type_pokemon_id FOREIGN KEY (pokemon_id) REFERENCES pokemon (id),
   CONSTRAINT fk_pokemon_type_type_id FOREIGN KEY (type_id) REFERENCES type (id)

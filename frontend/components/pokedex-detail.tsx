@@ -12,10 +12,10 @@ const GET_POKEDEX_DATA_QUERY = gql`
             height
             weight
             types {
-                name
+                nameEn
             }
             abilities {
-                name
+                nameEn
             }
         }
     }
@@ -131,7 +131,7 @@ const PokedexDetail: React.VFC<Props> = ({ pokemonId }) => {
                                     </td>
                                     <td className='flex gap-x-1'>
                                         {types?.map((type, i) => (
-                                            <span className='text-gray-50 rounded p-0.5' key={i} style={{'backgroundColor': selectColor(type.name)}}>{type.name.capitalizeFirstChar()}</span>
+                                            <span className='text-gray-50 rounded p-0.5' key={i} style={{'backgroundColor': selectColor(type.nameEn)}}>{type.nameEn.capitalizeFirstChar()}</span>
                                         ))}
                                     </td>
                                 </tr>

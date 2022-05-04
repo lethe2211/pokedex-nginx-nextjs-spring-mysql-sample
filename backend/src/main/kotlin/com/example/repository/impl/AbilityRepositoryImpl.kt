@@ -18,7 +18,10 @@ class AbilityRepositoryImpl(
             )
             jdbcTemplate.queryForList(GET_ABILITIES_BY_POKEMON_ID, param)
                 .map {
-                    Ability(it["id"].toString().toLong(), it["name"].toString())
+                    Ability(
+                        id = it["id"].toString().toLong(),
+                        nameEn = it["name_en"].toString()
+                    )
                 }
         } catch (e: EmptyResultDataAccessException) {
             listOf()

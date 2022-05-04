@@ -15,17 +15,19 @@ CREATE TABLE IF NOT EXISTS pokemon (
 
 CREATE TABLE IF NOT EXISTS type (
   id INT NOT NULL PRIMARY KEY,
-  name CHAR(50) DEFAULT NULL
+  name_en CHAR(50) DEFAULT NULL,
+  sort_order INT NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS ability (
   id INT NOT NULL PRIMARY KEY,
-  name CHAR(50) DEFAULT NULL
+  name_en CHAR(50) DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS pokemon_type (
   pokemon_id INT NOT NULL,
   type_id INT NOT NULL,
+  sort_order INT NOT NULL,
   PRIMARY KEY (pokemon_id, type_id),
   CONSTRAINT fk_pokemon_type_pokemon_id FOREIGN KEY (pokemon_id) REFERENCES pokemon (id),
   CONSTRAINT fk_pokemon_type_type_id FOREIGN KEY (type_id) REFERENCES type (id)
@@ -62,21 +64,29 @@ def generate_insert_pokemon_sql():
 # print(generate_insert_pokemon_sql())
 
 def generate_insert_type_sql():
-    params = {
-        'query': '{ pokemon_v2_type( order_by: { id: asc }) { id name } }'
-    }
-    headers = {'Content-Type': 'application/json'}
-    res = requests.post('https://beta.pokeapi.co/graphql/v1beta', json=params, headers=headers)
-    types = res.json()['data']['pokemon_v2_type']
-
-    sql = 'INSERT INTO type (id, name) VALUES\n'
-    for index, type in enumerate(types):
-        sql += f'''  ({type['id']}, '{type['name']}')'''
-
-        if index != len(types) - 1:
-            sql += ','
-        sql += '\n'
-    sql += ';\n'
+    sql = '''INSERT INTO type (id, name_en, sort_order) VALUES
+  (1, 'normal', 1),
+  (2, 'fighting', 7),
+  (3, 'flying', 10),
+  (4, 'poison', 8),
+  (5, 'ground', 9),
+  (6, 'rock', 13),
+  (7, 'bug', 12),
+  (8, 'ghost', 14),
+  (9, 'steel', 17),
+  (10, 'fire', 2),
+  (11, 'water', 3),
+  (12, 'grass', 5),
+  (13, 'electric', 4),
+  (14, 'psychic', 11),
+  (15, 'ice', 6),
+  (16, 'dragon', 15),
+  (17, 'dark', 16),
+  (18, 'fairy', 18),
+  (10001, 'unknown', 10001),
+  (10002, 'shadow', 10002)
+;
+'''
 
     return sql
 
@@ -90,7 +100,7 @@ def generate_insert_ability_sql():
     res = requests.post('https://beta.pokeapi.co/graphql/v1beta', json=params, headers=headers)
     types = res.json()['data']['pokemon_v2_ability']
 
-    sql = 'INSERT INTO ability (id, name) VALUES\n'
+    sql = 'INSERT INTO ability (id, name_en) VALUES\n'
     for index, type in enumerate(types):
         sql += f'''  ({type['id']}, '{type['name']}')'''
 
@@ -111,18 +121,28 @@ def generate_insert_pokemon_type_sql():
     res = requests.post('https://beta.pokeapi.co/graphql/v1beta', json=params, headers=headers)
     types = res.json()['data']['pokemon_v2_pokemontype']
 
-    sql = 'INSERT INTO pokemon_type (pokemon_id, type_id) VALUES\n'
+    sql = 'INSERT INTO pokemon_type (pokemon_id, type_id, sort_order) VALUES\n'
+    cnt = 0
+    prev_id = ''
     for index, type in enumerate(types):
-        sql += f'''  ({type['pokemon_id']}, {type['type_id']})'''
+        if prev_id != type['pokemon_id']:
+            cnt = 0
+        else:
+            cnt += 1
+
+        sql += f'''  ({type['pokemon_id']}, {type['type_id']}, {cnt})'''
 
         if index != len(types) - 1:
             sql += ','
         sql += '\n'
+
+        prev_id = type['pokemon_id']
+
     sql += ';\n'
 
     return sql
 
-# print(generate_insert_pokemon_type_sql())
+print(generate_insert_pokemon_type_sql())
 
 def generate_insert_pokemon_ability_sql():
     params = {
@@ -146,31 +166,31 @@ def generate_insert_pokemon_ability_sql():
 # print(generate_insert_pokemon_ability_sql())
 
 def get_pokemon_image_files():
-  for i in range(0, 810):
-    numstr = str(i).zfill(3)
-    image_url = f'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/{numstr}.png'
-    print(image_url)
-    res = requests.get(image_url)
-    with open(f'results/images/{numstr}.png', 'wb') as file:
-      file.write(res.content)
-    time.sleep(1)
+    for i in range(0, 810):
+        numstr = str(i).zfill(3)
+        image_url = f'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/{numstr}.png'
+        print(image_url)
+        res = requests.get(image_url)
+        with open(f'results/images/{numstr}.png', 'wb') as file:
+            file.write(res.content)
+        time.sleep(1)
 
 
 if __name__ == '__main__':
-  # dml = f'''{generate_insert_pokemon_sql()}
-  # {generate_insert_type_sql()}
-  # {generate_insert_ability_sql()}
-  # {generate_insert_pokemon_type_sql()}
-  # {generate_insert_pokemon_ability_sql()}'''
+  dml = f'''{generate_insert_pokemon_sql()}
+{generate_insert_type_sql()}
+{generate_insert_ability_sql()}
+{generate_insert_pokemon_type_sql()}
+{generate_insert_pokemon_ability_sql()}'''
 
-  # print(dml)
+  print(dml)
 
-  # init_sql = f'''-- DDL
-  # {ddl}
+  init_sql = f'''-- DDL
+{ddl}
 
-  # -- DML
-  # {dml}'''
-  # with open('results/init.sql', 'w') as file:
-  #   file.write(init_sql)
+-- DML
+{dml}'''
+  with open('results/init.sql', 'w') as file:
+    file.write(init_sql)
 
-  get_pokemon_image_files()
+#   get_pokemon_image_files()

@@ -28,8 +28,8 @@ class PokedexServiceImpl(
 
     override fun getPokedexData(id: Long): PokedexData {
         val pokemon = pokemonRepository.getPokemonById(id) ?: throw Exception("No pokemon was found")
-        val type = typeRepository.getTypesByPokemonId(id)
-        val ability = abilityRepository.getAbilitiesByPokemonId(id)
-        return PokedexData.of(pokemon, type, ability)
+        val types = typeRepository.getTypesByPokemonId(id)
+        val abilities = abilityRepository.getAbilitiesByPokemonId(id)
+        return PokedexData.of(pokemon, types, abilities)
     }
 }
