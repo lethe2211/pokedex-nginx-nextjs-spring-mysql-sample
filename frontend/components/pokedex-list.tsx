@@ -1,10 +1,8 @@
 import { gql, useQuery } from '@apollo/client';
-import { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ReactElement } from 'react';
-import Layout from '../components/layout'
-import NextPageWithLayout from '../pages/_app';
+import type PokedexData from '../models/pokedex-data';
+import '../libs/string-util';
 
 const GET_ALL_POKEDEX_DATA_QUERY = gql`
     query {
@@ -15,29 +13,12 @@ const GET_ALL_POKEDEX_DATA_QUERY = gql`
     }
 `
 
-interface Type {
-    name: string
-}
-
-interface Ability {
-    name: string
-}
-
-interface PokedexData {
-    id: string
-    nameEn: string
-    height: number
-    weight: number
-    types: Type[]
-    abilities: Ability[]
-}
-
-interface AllPokedexData {
+interface AllPokedexDataResponse {
     getAllPokedexData: PokedexData[]
 }
 
-const PokedexList = () => {
-    const { loading, error, data } = useQuery<AllPokedexData>(GET_ALL_POKEDEX_DATA_QUERY);
+const PokedexList: React.VFC = () => {
+    const { loading, error, data } = useQuery<AllPokedexDataResponse>(GET_ALL_POKEDEX_DATA_QUERY);
 
     if (loading) {
         return <p>Loading...</p>
@@ -53,8 +34,8 @@ const PokedexList = () => {
         <section>
             <div className="container my-12 mx-auto px-4 md:px-12">
                 <div className="flex flex-wrap -mx-1 lg:-mx-4">
-                    {allPokedexData?
-                        .slice(0, 809) // TODO: API should remove pokemons that do not have any image
+                    {allPokedexData
+                        ?.slice(0, 809) // TODO: API should remove pokemons that do not have any image
                         .map((pokedexData, i) => {
                             const pokemonIdStr = `#${String(pokedexData.id).padStart(3, "0")}`;
                             const imageUrl = `/images/pokemon/${String(pokedexData.id).padStart(3, "0")}.png`;
@@ -65,14 +46,14 @@ const PokedexList = () => {
                                     <article className="overflow-hidden rounded-lg shadow-lg">
                                         <Link href={linkUrl}>
                                             <a>
-                                                {/* <Image
-                                                    src={imageStr}
-                                                    alt={pokedexData.nameEn}
-                                                    layout="fill" /> */}
-                                                <img src={imageUrl} alt={pokedexData.nameEn} />
+                                                <Image
+                                                    src={imageUrl}
+                                                    alt={pokedexData.nameEn.capitalizeFirstChar()}
+                                                    width={500}
+                                                    height={500} />
                                                 <header className="flex items-center justify-between leading-tight p-2 md:p-4">
                                                     <h1 className="text-lg">
-                                                        {pokedexData.nameEn}
+                                                        {pokedexData.nameEn.capitalizeFirstChar()}
                                                     </h1>
                                                     <p className="text-grey-darker text-sm">
                                                         {pokemonIdStr}
