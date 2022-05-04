@@ -1,5 +1,5 @@
 interface Ability {
-    name: string
+    nameEn: string
 }
 
 export default Ability;

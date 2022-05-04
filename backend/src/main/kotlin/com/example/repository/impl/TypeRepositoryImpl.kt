@@ -18,7 +18,11 @@ class TypeRepositoryImpl(
             )
             jdbcTemplate.queryForList(GET_TYPES_BY_POKEMON_ID, param)
                 .map {
-                    Type(it["id"].toString().toLong(), it["name"].toString())
+                    Type(
+                        id = it["id"].toString().toLong(),
+                        nameEn = it["name_en"].toString(),
+                        sortOrder = it["sort_order"].toString().toLong()
+                    )
                 }
         } catch (e: EmptyResultDataAccessException) {
             listOf()
@@ -28,6 +32,6 @@ class TypeRepositoryImpl(
     }
 
     companion object {
-        private const val GET_TYPES_BY_POKEMON_ID: String = "SELECT * FROM pokemon_type INNER JOIN type ON pokemon_type.type_id = type.id WHERE pokemon_type.pokemon_id = :pokemonId"
+        private const val GET_TYPES_BY_POKEMON_ID: String = "SELECT * FROM pokemon_type INNER JOIN type ON pokemon_type.type_id = type.id WHERE pokemon_type.pokemon_id = :pokemonId ORDER BY pokemon_type.sort_order ASC"
     }
 }
