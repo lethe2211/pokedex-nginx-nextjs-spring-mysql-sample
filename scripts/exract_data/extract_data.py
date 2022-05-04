@@ -146,7 +146,7 @@ def generate_insert_pokemon_ability_sql():
 # print(generate_insert_pokemon_ability_sql())
 
 def get_pokemon_image_files():
-  for i in range(1, 610):
+  for i in range(0, 810):
     numstr = str(i).zfill(3)
     image_url = f'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/{numstr}.png'
     print(image_url)

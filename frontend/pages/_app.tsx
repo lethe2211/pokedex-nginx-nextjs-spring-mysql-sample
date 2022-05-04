@@ -5,7 +5,7 @@ import type { AppProps } from 'next/app'
 import { ApolloProvider } from "@apollo/client";
 import client from "../libs/apollo-client";
 
-type NextPageWithLayout = NextPage & {
+export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
 }
 
@@ -24,4 +24,4 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
   );
 }
 
-export default App
+export default App;

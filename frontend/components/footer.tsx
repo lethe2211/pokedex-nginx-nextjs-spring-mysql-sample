@@ -1,4 +1,4 @@
-const Footer = () => {
+const Footer: React.VFC = () => {
     return (
         <nav className="flex items-center justify-center flex-wrap bg-[#E4021C]">
             <div className="flex items-center flex-shrink-0 text-white mr-6">

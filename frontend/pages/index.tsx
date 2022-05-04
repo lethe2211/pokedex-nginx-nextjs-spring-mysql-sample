@@ -1,4 +1,4 @@
-import type { NextPageWithLayout } from 'next'
+import type { NextPageWithLayout } from './_app'
 import Head from 'next/head'
 import Image from 'next/image'
 import Layout from '../components/layout'
@@ -7,12 +7,12 @@ import styles from '../styles/Home.module.css'
 
 const Home: NextPageWithLayout = () => {
   return (
-    <div className=''>
+    <div className='container'>
       <Head>
         <title>Pokedex app</title>
       </Head>
 
-      <PokedexList></PokedexList>
+      <PokedexList />
     </div>
   )
 }

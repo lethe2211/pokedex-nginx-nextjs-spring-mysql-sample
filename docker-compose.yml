@@ -4,10 +4,12 @@ services:
     image: nginx
     volumes:
       - type: bind
-        source: "./nginx/templates"
+        source: "./web/templates"
         target: "/etc/nginx/templates"
     ports:
       - "8000:80"
+    depends_on:
+      - frontend
   frontend:
     build:
       context: ./frontend
