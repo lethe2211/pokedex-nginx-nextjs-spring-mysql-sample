@@ -177,20 +177,24 @@ def get_pokemon_image_files():
 
 
 if __name__ == '__main__':
-  dml = f'''{generate_insert_pokemon_sql()}
-{generate_insert_type_sql()}
-{generate_insert_ability_sql()}
-{generate_insert_pokemon_type_sql()}
-{generate_insert_pokemon_ability_sql()}'''
+    # Fetch Pokemon images from https://github.com/fanzeyi/pokemon.json/tree/master/images
+    # Note that these images do not contain Sword and Shield versions
+    get_pokemon_image_files()
 
-  print(dml)
+# Use the below if you want to generate 
+# 
+#     dml = f'''{generate_insert_pokemon_sql()}
+# {generate_insert_type_sql()}
+# {generate_insert_ability_sql()}
+# {generate_insert_pokemon_type_sql()}
+# {generate_insert_pokemon_ability_sql()}'''
 
-  init_sql = f'''-- DDL
-{ddl}
+#     print(dml)
 
--- DML
-{dml}'''
-  with open('results/init.sql', 'w') as file:
-    file.write(init_sql)
+#     init_sql = f'''-- DDL
+# {ddl}
 
-#   get_pokemon_image_files()
+# -- DML
+# {dml}'''
+#     with open('results/init.sql', 'w') as file:
+#         file.write(init_sql)
