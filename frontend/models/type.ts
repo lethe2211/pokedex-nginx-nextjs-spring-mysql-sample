@@ -1,5 +1,5 @@
 interface Type {
-    nameEn: string;
+  nameEn: string;
 }
 
 export default Type;
