@@ -53,6 +53,7 @@ $ pip install -r requirements.txt
 $ python3 extract_data.py
   # Download Pokemon images from Github
 
+$ cd ../../
 $ cp scripts/extract_data/results/images/*.png frontend/public/images/pokemon/
   # Copy all the images to the image directory of the frontend app
 ```
