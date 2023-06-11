@@ -27,7 +27,7 @@ flowchart LR
     * Tailwind CSS >= 3.0.24
     * GraphQL
 * Backend
-    * Spring Boot >= 2.7.0-M1
+    * Spring Boot >= 2.7.0
     * Kotlin >= 1.6.0
     * AdoptOpenJDK >= 11
     * Spring GraphQL >= 1.0.0-SNAPSHOT
@@ -52,6 +52,9 @@ $ pip install -r requirements.txt
 
 $ python3 extract_data.py
   # Download Pokemon images from Github
+
+$ cp scripts/extract_data/results/images/*.png frontend/public/images/pokemon/
+  # Copy all the images to the image directory of the frontend app
 ```
 
 ### 1-a. Run the app with Docker Compose
@@ -66,7 +69,7 @@ $ python3 extract_data.py
       # Run the containers using Docker Compose
     ```
 
-2. Visit http://localhost:8000/ after every component seems to boot up
+2. Visit http://localhost:3000/ after every component seems to boot up
 
 ### 1-b. Run DEV server
 

@@ -142,7 +142,7 @@ def generate_insert_pokemon_type_sql():
 
     return sql
 
-print(generate_insert_pokemon_type_sql())
+# print(generate_insert_pokemon_type_sql())
 
 def generate_insert_pokemon_ability_sql():
     params = {
@@ -166,11 +166,11 @@ def generate_insert_pokemon_ability_sql():
 # print(generate_insert_pokemon_ability_sql())
 
 def get_pokemon_image_files():
-    for i in range(0, 810):
+    for i in range(1, 810):
         numstr = str(i).zfill(3)
         image_url = f'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/{numstr}.png'
         print(image_url)
-        res = requests.get(image_url)
+        res = requests.get(image_url, verify=False)
         with open(f'results/images/{numstr}.png', 'wb') as file:
             file.write(res.content)
         time.sleep(1)
