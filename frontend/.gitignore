@@ -38,4 +38,4 @@ yarn-error.log*
 *.tsbuildinfo
 
 # Pokemon images
-public/images/pokemon/
+public/images/pokemon/*.png
