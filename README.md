@@ -70,7 +70,7 @@ $ cp scripts/extract_data/results/images/*.png frontend/public/images/pokemon/
       # Run the containers using Docker Compose
     ```
 
-2. Visit http://localhost:3000/ after every component seems to boot up
+2. Visit http://localhost:8000/ after every component seems to boot up
 
 ### 1-b. Run DEV server
 
